@@ -3,14 +3,13 @@
 
 set -euo pipefail
 
-max_pods_to_kill="${1:-5}"
-pods_selector_to_kill="${2:-test-app-hello}"
-kill_interval="${3:-10}"
+max_pods_to_kill="${1:-10}"
+kill_interval="${2:-10}"
 
 while true; do
 
     for pod_name in $(kubectl -n default get pods \
-            --selector "app=${pods_selector_to_kill}" \
+            --selector "app in (test-app-hello, test-app-employee)" \
             -o custom-columns=POD:metadata.name,READY-true:status.containerStatuses[*].ready \
             --no-headers \
                 | grep true \
