@@ -1,0 +1,17 @@
+kind: PodChaos
+apiVersion: chaos-mesh.org/v1alpha1
+metadata:
+  namespace: default
+  name: x1
+spec:
+  selector:
+    namespaces:
+      - default
+    labelSelectors:
+      app: test-app-hello
+    podPhaseSelectors:
+      - Running
+  mode: random-max-percent
+  value: '50'
+  action: pod-failure
+  duration: 10m
