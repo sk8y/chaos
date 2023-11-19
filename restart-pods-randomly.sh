@@ -4,7 +4,7 @@
 set -euo pipefail
 
 max_pods_to_kill="${1:-10}"
-kill_interval="${2:-10}"
+kill_interval="${2:-1}"
 
 while true; do
 
@@ -17,6 +17,13 @@ while true; do
                 | shuf -n "${max_pods_to_kill}" \
                 | xargs echo
             )"
+
+    if [[ "x${pod_list}" == "x" ]]; then
+        echo "$(date +%y%m%d-%H%M%S) - no pods to kill"
+        sleep "${kill_interval}"
+        continue
+    fi
+
     echo "$(date +%y%m%d-%H%M%S) - deleting pods: ${pod_list}"
     kubectl -n default delete pod ${pod_list}
     sleep "${kill_interval}"
