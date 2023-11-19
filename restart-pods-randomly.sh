@@ -1,10 +1,11 @@
 #!/bin/bash
 
 
-set -euo pipefail
+#set -euo pipefail
 
 max_pods_to_kill="${1:-10}"
 kill_interval="${2:-1}"
+set -x
 
 while true; do
 
