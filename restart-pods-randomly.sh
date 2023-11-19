@@ -3,7 +3,7 @@
 
 #set -euo pipefail
 
-max_pods_to_kill="${1:-3}"
+max_pods_to_kill="${1:-4}"
 kill_interval="${2:-1}"
 set -x
 
