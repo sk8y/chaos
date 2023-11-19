@@ -9,7 +9,7 @@ set -x
 
 while true; do
 
-    pod_list="$(kubectl -n default get pods \
+    pod_list="$(kubectl -n test-app get pods \
             --selector "app in (test-app-hello, test-app-employee)" \
             -o custom-columns=POD:metadata.name,READY-true:status.containerStatuses[*].ready \
             --no-headers \
@@ -21,12 +21,9 @@ while true; do
 
     if [[ "x${pod_list}" == "x" ]]; then
         echo "$(date +%y%m%d-%H%M%S) - no pods to kill"
-        sleep "${kill_interval}"
-        continue
+    else
+        echo "$(date +%y%m%d-%H%M%S) - deleting pods: ${pod_list}"
+        kubectl -n test-app delete pod ${pod_list} 2>&1 | sed 's/^/    /'
     fi
-
-    echo "$(date +%y%m%d-%H%M%S) - deleting pods: ${pod_list}"
-    kubectl -n default delete pod ${pod_list}
     sleep "${kill_interval}"
-
 done
