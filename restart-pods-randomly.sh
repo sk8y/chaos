@@ -3,14 +3,14 @@
 
 #set -euo pipefail
 
-max_pods_to_kill="${1:-4}"
+max_pods_to_kill="${1:-2}"
 kill_interval="${2:-1}"
-set -x
+#set -x
 
 while true; do
 
     pod_list="$(kubectl -n test-app get pods \
-            --selector "app in (test-app-hello, test-app-employee)" \
+            --selector "app in (test-app-employee)" \
             -o custom-columns=POD:metadata.name,READY-true:status.containerStatuses[*].ready \
             --no-headers \
                 | grep true \
